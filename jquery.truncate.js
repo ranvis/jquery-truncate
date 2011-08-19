@@ -30,7 +30,7 @@
 			return end;
 		}
 
-		mid = parseInt((start + end) / 2, 10);
+		mid = Math.floor((start + end) / 2);
 		if (mid !== start) {
 			opt1 = fromEnd ? text.slice(-mid) : text.slice(0, mid);
 			width1 = calcWidth(opt1 + token, $workerEl, cache);
@@ -81,10 +81,11 @@
 			if (originalWidth > truncateWidth) {
 				$truncateWorker.text('');
 				if (options.center) {
-					truncateWidth = parseInt(truncateWidth / 2, 10) + 1;
-					truncatedText = elementText.slice(0, findTruncPoint(truncateWidth, elementText, 0, elementText.length, $truncateWorker, options.token, false))
+					var truncateWidthL = Math.ceil(truncateWidth / 2);
+					var truncateWidthR = Math.floor(truncateWidth / 2);
+					truncatedText = elementText.slice(0, findTruncPoint(truncateWidthL, elementText, 0, elementText.length, $truncateWorker, options.token, false))
 									+ options.token
-									+ elementText.slice(-1 * findTruncPoint(truncateWidth, elementText, 0, elementText.length, $truncateWorker, '', true));
+									+ elementText.slice(-1 * findTruncPoint(truncateWidthR, elementText, 0, elementText.length, $truncateWorker, '', true));
 				} else {
 					truncatedText = elementText.slice(0, findTruncPoint(truncateWidth, elementText, 0, elementText.length, $truncateWorker, options.token, false)) + options.token;
 				}
