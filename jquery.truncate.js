@@ -3,6 +3,16 @@
 		return !isNaN(parseFloat(n)) && isFinite(n);
 	}
 	function findTruncPoint(maxWidth, text, start, end, $workerEl, token, fromEnd) {
+		var cache = {};
+		return findTruncPointWithCache(maxWidth, text, start, end, $workerEl, token, fromEnd, cache);
+	}
+	function calcWidth(text, $workerEl, cache) {
+		if (!cache[text]) {
+			return cache[text] = $workerEl.html(text).width();
+		}
+		return cache[text];
+	}
+	function findTruncPointWithCache(maxWidth, text, start, end, $workerEl, token, fromEnd, cache) {
 		var opt1,
 			opt2,
 			mid;
@@ -15,25 +25,27 @@
 			opt2 = text.slice(0, end);
 		}
 
-		if ($workerEl.html(opt2 + token).width() < $workerEl.html(opt1 + token).width()) {
+		var width1 = calcWidth(opt1 + token, $workerEl, cache);
+		if (calcWidth(opt2 + token, $workerEl, cache) < width1) {
 			return end;
 		}
 
 		mid = parseInt((start + end) / 2, 10);
-		opt1 = fromEnd ? text.slice(-mid) : text.slice(0, mid);
-
-		$workerEl.html(opt1 + token);
-		if ($workerEl.width() === maxWidth) {
+		if (mid !== start) {
+			opt1 = fromEnd ? text.slice(-mid) : text.slice(0, mid);
+			width1 = calcWidth(opt1 + token, $workerEl, cache);
+		}
+		if (width1 === maxWidth) {
 			return mid;
 		}
 
-		if ($workerEl.width() > maxWidth) {
+		if (width1 > maxWidth) {
 			end = mid - 1;
 		} else {
 			start = mid + 1;
 		}
 
-		return findTruncPoint(maxWidth, text, start, end, $workerEl, token, fromEnd);
+		return findTruncPointWithCache(maxWidth, text, start, end, $workerEl, token, fromEnd, cache);
 	}
 
 	$.fn.truncate = function (options) {
