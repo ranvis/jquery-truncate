@@ -70,6 +70,7 @@
 					'text-transform': $element.css('text-transform'),
 					'letter-spacing': $element.css('letter-spacing'),
 					'word-spacing': $element.css('word-spacing'),
+					'whiteSpace': $element.css('whiteSpace'),
 					'display': 'none'
 				},
 				elementText = $element.text(),
@@ -83,9 +84,14 @@
 				if (options.center) {
 					var truncateWidthL = Math.ceil(truncateWidth / 2);
 					var truncateWidthR = Math.floor(truncateWidth / 2);
-					truncatedText = elementText.slice(0, findTruncPoint(truncateWidthL, elementText, 0, elementText.length, $truncateWorker, options.token, false))
-									+ options.token
-									+ elementText.slice(-1 * findTruncPoint(truncateWidthR, elementText, 0, elementText.length, $truncateWorker, '', true));
+					var truncatedTextL = elementText.slice(0, findTruncPoint(truncateWidthL, elementText, 0, elementText.length, $truncateWorker, options.token, false));
+					var truncatedTextR = elementText.slice(-1 * findTruncPoint(truncateWidthR, elementText, 0, elementText.length, $truncateWorker, '', true));
+					if (fontCSS.whiteSpace.slice(0, 3) !== 'pre') {
+						while (truncatedTextR.slice(0, 1) === ' ') {
+							truncatedTextR = truncatedTextR.slice(1);
+						}
+					}
+					truncatedText = truncatedTextL + options.token + truncatedTextR;
 				} else {
 					truncatedText = elementText.slice(0, findTruncPoint(truncateWidth, elementText, 0, elementText.length, $truncateWorker, options.token, false)) + options.token;
 				}
