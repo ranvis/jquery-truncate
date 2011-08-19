@@ -8,7 +8,7 @@
 	}
 	function calcWidth(text, $workerEl, cache) {
 		if (!cache[text]) {
-			return cache[text] = $workerEl.html(text).width();
+			return cache[text] = $workerEl.text(text).width();
 		}
 		return cache[text];
 	}
@@ -51,7 +51,7 @@
 	$.fn.truncate = function (options) {
 		var defaults = {
 			width: 'auto',
-			token: '&hellip;',
+			token: '\u2026', // HORIZONTAL ELLIPSIS
 			center: false,
 			addclass: false,
 			addtitle: false
@@ -73,7 +73,7 @@
 					'display': 'none'
 				},
 				elementText = $element.text(),
-				$truncateWorker = $('<span/>').css(fontCSS).html(elementText).appendTo('body'),
+				$truncateWorker = $('<span/>').css(fontCSS).text(elementText).appendTo('body'),
 				originalWidth = $truncateWorker.width(),
 				truncateWidth = isNumber(options.width) ? options.width : $element.width(),
 				truncatedText;
@@ -97,7 +97,7 @@
 					$element.attr('title', elementText);
 				}
 
-				$element.html(truncatedText);
+				$element.text(truncatedText);
 
 			}
 
