@@ -87,7 +87,7 @@
 					var truncatedTextL = elementText.slice(0, findTruncPoint(truncateWidthL, elementText, 0, elementText.length, $truncateWorker, options.token, false));
 					var truncatedTextR = elementText.slice(-1 * findTruncPoint(truncateWidthR, elementText, 0, elementText.length, $truncateWorker, '', true));
 					if (fontCSS.whiteSpace.slice(0, 3) !== 'pre') {
-						while (truncatedTextR.slice(0, 1) === ' ') {
+						while (truncatedTextR.charAt(0) === ' ') {
 							truncatedTextR = truncatedTextR.slice(1);
 						}
 					}
