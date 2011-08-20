@@ -10,14 +10,14 @@ Additionally if the text has been shortened you can set a class to be appended t
 
     $('.class').truncate({
     	width: 'auto',
-    	token: '&hellip;',
+    	token: '\u2026',
     	center: false,
     });
 
 ## Options ##
 
 - **width** (int) Width to which the text will be shortened *[default: auto]*
-- **token** (string) Replacement string for the stripped part *[default: '&amp;hellip;']*
+- **token** (string) Replacement string for the stripped part *[default: '\\u2026']*
 - **center** (bool) Shortens at the center of the string if set to 'true' *[default: false]*
 - **addclass** (string) Add a class to the truncated strings element *[default: false]*
 - **addtitle** (bool) Add/Set "title" attribute with original text to the truncated strings element *[default: false]*
